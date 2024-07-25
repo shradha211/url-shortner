@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .header {
+        background: #197278;
+        color: white;
+        text-align: center;
+        padding: 2rem 0;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+      }
+
+      .content {
+        flex: 1;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #edddd4;
+      }
+
+      .content form {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+      }
+
+      .content form input,
+      .content form button {
+        width: calc(100% - 4rem);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+
+      .content form input[readonly] {
+        background: #f9f9f9;
+        cursor: not-allowed;
+      }
+
+      .content form button {
+        background: #197278;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .content form button:hover {
+        background: #145e5b;
+      }
+
+      .op-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .fa-clipboard {
+        cursor: pointer;
+        margin-left: 1rem;
+        color: #197278;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -70px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .footer {
+        background-color: #283d3b;
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+      }
+
+      .footer a {
+        margin: 0 1rem;
+        color: white;
+        transition: color 0.3s ease;
+      }
+
+      .footer a:hover {
+        color: #e2661d;
+      }
+
+      .footer .copyright {
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>URL Shortener</h1>
+      </div>
+      <div class="content">
+        {% block content %}
+        <form method="POST">
+          {% csrf_token %} {{ form.as_p }}
+          <div class="op-link">
+            {% if uid %}
+            <input
+              id="url"
+              value="http://127.0.0.1:8000/{{ uid }}"
+              class="form-control"
+              readonly
+            />
+            <div class="tooltip">
+              <div onclick="myFunction()" onmouseout="outFunc()">
+                <span class="tooltiptext" id="myTooltip"
+                  >Copy to clipboard</span
+                >
+                <i class="fa fa-clipboard"></i>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          <button onclick="homeFunction()">Go Back</button>
+        </form>
+        {% endblock content %}
+      </div>
+      <div class="footer">
+        <a
+          href="https://twitter.com/#"
+          class="fa fa-twitter"
+          target="_blank"
+        ></a>
+        <a
+          href="https://mail.google.com/mail/#"
+          class="fa fa-google"
+          target="_blank"
+        ></a>
+        <a
+          href="https://www.linkedin.com/in/#/"
+          class="fa fa-linkedin"
+          target="_blank"
+        ></a>
+        <a href="https://github.com/#" class="fa fa-github" target="_blank"></a>
+        <div class="copyright">© URL Project</div>
+      </div>
+    </div>
+    <script>
+      function myFunction() {
+        var copyText = document.querySelector("#url");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+      }
+
+      function outFunc() {
+        var tooltip = document.getElementById("myTooltip");
+        tooltip.innerHTML = "Copy to clipboard";
+      }
+
+      function homeFunction() {
+        window.location.href = "/";
+      }
+    </script>
+  </body>
+</html>

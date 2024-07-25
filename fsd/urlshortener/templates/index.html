@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: "Arial", sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .header {
+        background: #007bff;
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      .link form {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .link form input,
+      .link form button {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        font-size: 1rem;
+      }
+
+      .link form input[type="text"] {
+        background: #f1f3f5;
+      }
+
+      .link form button {
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .link form button:hover {
+        background: #0056b3;
+      }
+
+      .footer {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+        box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer a {
+        color: white;
+        margin: 0 1rem;
+        font-size: 1.5rem;
+        transition: color 0.3s;
+      }
+
+      .footer a:hover {
+        color: #007bff;
+      }
+
+      .footer .copyright {
+        margin-top: 1rem;
+        font-size: 0.875rem;
+      }
+
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: #343a40;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -70px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #343a40 transparent transparent transparent;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .errorlist {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>URL Shortener</h1>
+      </div>
+      <div class="content">
+        <div class="link">
+          {% block content %}
+          <form method="POST">
+            {% csrf_token %} {{ form.as_p }}
+            <button type="submit">Submit</button>
+          </form>
+          {% endblock content %}
+        </div>
+      </div>
+      <div class="footer">
+        <a
+          href="https://twitter.com/#"
+          class="fa fa-twitter"
+          target="_blank"
+        ></a>
+        <a
+          href="https://mail.google.com/mail/#"
+          class="fa fa-google"
+          target="_blank"
+        ></a>
+        <a
+          href="https://www.linkedin.com/in/#/"
+          class="fa fa-linkedin"
+          target="_blank"
+        ></a>
+        <a href="https://github.com/#" class="fa fa-github" target="_blank"></a>
+        <div class="copyright">© URL Project</div>
+      </div>
+    </div>
+    <script>
+      function myFunction() {
+        var copyText = document.querySelector("#url");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+      }
+
+      function outFunc() {
+        var tooltip = document.getElementById("myTooltip");
+        tooltip.innerHTML = "Copy to clipboard";
+      }
+
+      function homeFunction() {
+        window.location.href = "/";
+      }
+    </script>
+  </body>
+</html>
